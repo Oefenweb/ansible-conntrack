@@ -19,7 +19,7 @@
 - name: apply kernel module parameters
   shell: "echo {{ item.item.1.value }} >> /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
   changed_when: item.stdout != item.item.1.value | string
-  with_items: check_kernel_module_parameters.results
+  with_items: check_kernel_module_parameters.results | default([])
   tags: [configuration, conntrack, conntrack-configuration]
 
 - name: save kernel modules
