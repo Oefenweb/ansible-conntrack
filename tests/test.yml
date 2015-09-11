@@ -4,12 +4,3 @@
   remote_user: root
   roles:
     - ../../
-  vars:
-    conntrack_kernel_modules:
-      - name: nf_conntrack
-        params:
-          - name: hashsize
-            value: 16384
-    conntrack_sysctl_settings:
-      - name: net.netfilter.nf_conntrack_max 
-        value: 65536
