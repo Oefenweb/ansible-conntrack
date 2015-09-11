@@ -1,0 +1,46 @@
+# tasks file for conntrack
+---
+- name: load kernel modules
+  modprobe:
+    name: "{{ item.name }}"
+  with_items: conntrack_kernel_modules
+  tags: [configuration, conntrack, conntrack-configuration]
+
+- name: check kernel module parameters
+  shell: "cat /sys/module/{{ item.0.name }}/parameters/{{ item.1.name }}"
+  register: check_kernel_module_parameters
+  failed_when: False
+  changed_when: False
+  with_subelements:
+    - "{{ conntrack_kernel_modules | selectattr('params', 'defined') | list }}"
+    - params
+  tags: [configuration, conntrack, conntrack-configuration]
+
+- name: apply kernel module parameters
+  shell: "echo {{ item.item.1.value }} >> /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
+  changed_when: item.stdout != item.item.1.value | string
+  with_items: check_kernel_module_parameters.results
+  tags: [configuration, conntrack, conntrack-configuration]
+
+- name: save kernel modules
+  lineinfile:
+    dest: /etc/modules
+    line: "{{ item.name }}"
+  with_items: conntrack_kernel_modules
+  tags: [configuration, conntrack, conntrack-configuration]
+
+- name: save kernel module parameters
+  template:
+    src: etc/modprobe.d/config.conf.j2
+    dest: "/etc/modprobe.d/{{ item.name }}.conf"
+  with_items: conntrack_kernel_modules
+  tags: [configuration, conntrack, conntrack-configuration]
+
+- name: set sysctl settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items: conntrack_sysctl_settings
+  notify: reload sysctl
+  tags: [configuration, conntrack, conntrack-configuration]

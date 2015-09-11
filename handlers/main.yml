@@ -1,0 +1,4 @@
+# handlers file for conntrack
+---
+- name: reload sysctl
+  command: sysctl -p

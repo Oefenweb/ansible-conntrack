@@ -1,0 +1,5 @@
+# defaults file for conntrack
+---
+conntrack_kernel_modules: []
+
+conntrack_sysctl_settings: []
