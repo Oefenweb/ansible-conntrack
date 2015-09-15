@@ -1,8 +1,8 @@
 ## conntrack
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-conntrack.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-conntrack) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-conntrack-blue.svg)](https://galaxy.ansible.com/list#/roles/1961)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-conntrack.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-conntrack) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-conntrack-blue.svg)](https://galaxy.ansible.com/list#/roles/5041)
 
-Manage conntrack configuration.
+Manage `(nf_)conntrack` in Debian-like systems.
 
 #### Requirements
 
@@ -15,10 +15,10 @@ None
 * `conntrack_kernel_modules.{n}.params`: [optional, default: `[]`]: List of parameters for this kernel module
 * `conntrack_kernel_modules.{n}.params.{n}.name`: [required]: Name of the parameter
 * `conntrack_kernel_modules.{n}.params.{n}.value`: [required]: Value of the parameter
-* `conntrack_sysctl_settings`: [default: `[]`]: List of sysctl settings
-* `conntrack_sysctl_settings.{n}.name`: [required]: Name of the sysctl setting
-* `conntrack_sysctl_settings.{n}.value`: [required]: Value of the sysctl setting
 
+* `conntrack_sysctl_settings`: [default: `[]`]: List of `sysctl` settings
+* `conntrack_sysctl_settings.{n}.name`: [required]: Name of the `sysctl` setting
+* `conntrack_sysctl_settings.{n}.value`: [required]: Value of the `sysctl` setting
 
 ## Dependencies
 
@@ -39,8 +39,7 @@ None
             value: 16384
     conntrack_sysctl_settings:
       - name: net.netfilter.nf_conntrack_max 
-        value: 65536    
-
+        value: 65536
 ```
 
 #### License

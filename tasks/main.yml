@@ -9,15 +9,15 @@
 - name: check kernel module parameters
   shell: "cat /sys/module/{{ item.0.name }}/parameters/{{ item.1.name }}"
   register: check_kernel_module_parameters
-  failed_when: False
-  changed_when: False
+  failed_when: false
+  changed_when: false
   with_subelements:
     - "{{ conntrack_kernel_modules | selectattr('params', 'defined') | list }}"
     - params
   tags: [configuration, conntrack, conntrack-configuration]
 
 - name: apply kernel module parameters
-  shell: "echo {{ item.item.1.value }} >> /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
+  shell: "echo {{ item.item.1.value }} > /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
   changed_when: item.stdout != item.item.1.value | string
   with_items: check_kernel_module_parameters.results | default([])
   tags: [configuration, conntrack, conntrack-configuration]

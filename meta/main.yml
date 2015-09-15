@@ -3,7 +3,7 @@
 galaxy_info:
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
-  description: Manage conntrack configuration
+  description: Manage (nf_)conntrack in Debian-like systems
   license: MIT
   min_ansible_version: 1.4
   platforms:
