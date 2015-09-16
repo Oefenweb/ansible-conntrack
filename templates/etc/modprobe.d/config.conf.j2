@@ -1,0 +1,7 @@
+## {{ ansible_managed }}
+
+{% if item.params is defined %}
+{% for param in item.params %}
+options {{ item.name }} {{ param.name }}={{ param.value }}
+{% endfor %}
+{% endif %}
