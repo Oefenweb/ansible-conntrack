@@ -55,9 +55,9 @@
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
+    reload: yes
     state: present
   with_items: conntrack_sysctl_settings
-  notify: reload sysctl
   tags:
     - configuration
     - conntrack
