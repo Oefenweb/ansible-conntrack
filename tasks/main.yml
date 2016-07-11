@@ -3,7 +3,7 @@
 - name: load kernel modules
   modprobe:
     name: "{{ item.name }}"
-  with_items: conntrack_kernel_modules
+  with_items: "{{ conntrack_kernel_modules }}"
   tags:
     - configuration
     - conntrack
@@ -25,7 +25,7 @@
 - name: apply kernel module parameters
   shell: "echo {{ item.item.1.value }} > /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
   changed_when: item.stdout != item.item.1.value | string
-  with_items: check_kernel_module_parameters.results | default([])
+  with_items: "{{ check_kernel_module_parameters.results | default([]) }}"
   tags:
     - configuration
     - conntrack
@@ -35,7 +35,7 @@
   lineinfile:
     dest: /etc/modules
     line: "{{ item.name }}"
-  with_items: conntrack_kernel_modules
+  with_items: "{{ conntrack_kernel_modules }}"
   tags:
     - configuration
     - conntrack
@@ -45,7 +45,7 @@
   template:
     src: etc/modprobe.d/config.conf.j2
     dest: "/etc/modprobe.d/{{ item.name }}.conf"
-  with_items: conntrack_kernel_modules
+  with_items: "{{ conntrack_kernel_modules }}"
   tags:
     - configuration
     - conntrack
@@ -57,7 +57,7 @@
     value: "{{ item.value }}"
     reload: true
     state: present
-  with_items: conntrack_sysctl_settings
+  with_items: "{{ conntrack_sysctl_settings }}"
   tags:
     - configuration
     - conntrack
