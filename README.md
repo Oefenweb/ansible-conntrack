@@ -1,6 +1,6 @@
 ## conntrack
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-conntrack.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-conntrack) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-conntrack-blue.svg)](https://galaxy.ansible.com/list#/roles/5041)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-conntrack.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-conntrack) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-conntrack-blue.svg)](https://galaxy.ansible.com/Oefenweb/conntrack)
 
 Manage `(nf_)conntrack` in Debian-like systems.
 
