@@ -1,6 +1,7 @@
 # meta file for conntrack
 ---
 galaxy_info:
+  role_name: conntrack
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Manage (nf_)conntrack in Debian-like systems
