@@ -1,4 +1,4 @@
-# defaults file for conntrack
+# defaults file
 ---
 conntrack_kernel_modules: []
 

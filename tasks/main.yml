@@ -1,4 +1,4 @@
-# tasks file for conntrack
+# tasks file
 ---
 - name: load kernel modules
   modprobe:
