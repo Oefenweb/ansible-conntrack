@@ -1,2 +1,4 @@
 # vars file
 ---
+conntrack_dependencies:
+  - procps

@@ -3,14 +3,26 @@
 - hosts: all
   remote_user: vagrant
   become: true
+  pre_tasks:
+    - name: include vars
+      include_vars: "{{ playbook_dir }}/vars/main.yml"
   roles:
     - ../../
+  post_tasks:
+    - name: include tasks
+      include: "{{ playbook_dir }}/tasks/post.yml"
+    - name: check hashsize
+      shell: >
+        cat /sys/module/{{ conntrack_kernel_modules[0]['name'] }}/parameters/{{ conntrack_kernel_modules[0]['params'][0]['name'] }}
+        | grep -q {{ conntrack_kernel_modules[0]['params'][0]['value'] }}
+        && (echo 'test: pass' && exit 0)
+        || (echo 'test: fail' && exit 1)
+      changed_when: false
+      tags:
+        - skip_ansible_lint
   vars:
     conntrack_kernel_modules:
       - name: nf_conntrack
         params:
           - name: hashsize
             value: 16384
-    conntrack_sysctl_settings:
-      - name: net.netfilter.nf_conntrack_max
-        value: 65536

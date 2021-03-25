@@ -1,0 +1,12 @@
+# post test file
+---
+- name: check nf_conntrack_max
+  shell: >
+    sysctl -a
+    | grep {{ conntrack_sysctl_settings[0]['name'] }}
+    | grep -q {{ conntrack_sysctl_settings[0]['value'] }}
+    && (echo 'test: pass' && exit 0)
+    || (echo 'test: fail' && exit 1)
+  changed_when: false
+  tags:
+    - skip_ansible_lint

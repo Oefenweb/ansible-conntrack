@@ -1,5 +1,16 @@
 # tasks file
 ---
+- name: install dependencies
+  apt:
+    name: "{{ conntrack_dependencies }}"
+    state: "{{ apt_install_state | default('latest') }}"
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+  tags:
+    - configuration
+    - conntrack
+    - conntrack-install-dependencies
+
 - name: load kernel modules
   modprobe:
     name: "{{ item.name }}"
@@ -24,8 +35,11 @@
     - conntrack-check-kernel-module-parameters
 
 - name: apply kernel module parameters
-  shell: >
-    echo {{ item.item.1.value }} > /sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}
+  copy:
+    content: "{{ item.item.1.value }}"
+    dest: "/sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
+    mode: preserve
+    unsafe_writes: true
   changed_when: item.stdout != item.item.1.value | string
   with_items: "{{ _check_kernel_module_parameters.results | default([]) }}"
   tags:
@@ -47,6 +61,7 @@
   template:
     src: etc/modprobe.d/config.conf.j2
     dest: "/etc/modprobe.d/{{ item.name }}.conf"
+    mode: 0644
   with_items: "{{ conntrack_kernel_modules }}"
   tags:
     - configuration

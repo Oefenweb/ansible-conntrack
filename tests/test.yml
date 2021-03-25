@@ -3,5 +3,11 @@
 - hosts: localhost
   connection: local
   become: true
+  pre_tasks:
+    - name: include vars
+      include_vars: "{{ playbook_dir }}/vars/main.yml"
   roles:
     - ../../
+  post_tasks:
+    - name: include tasks
+      include: "{{ playbook_dir }}/tasks/post.yml"
