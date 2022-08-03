@@ -26,6 +26,7 @@
   register: _check_kernel_module_parameters
   failed_when: false
   changed_when: false
+  check_mode: false
   with_subelements:
     - "{{ conntrack_kernel_modules | selectattr('params', 'defined') | list }}"
     - params
