@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: install dependencies
-  apt:
+  ansible.builtin.apt:
     name: "{{ conntrack_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -12,7 +12,7 @@
     - conntrack-install-dependencies
 
 - name: load kernel modules
-  modprobe:
+  community.general.modprobe:
     name: "{{ item.name }}"
   with_items: "{{ conntrack_kernel_modules }}"
   tags:
@@ -21,11 +21,12 @@
     - conntrack-load-kernel-modules
 
 - name: check kernel module parameters
-  shell: >
+  ansible.builtin.shell: >
     cat /sys/module/{{ item.0.name }}/parameters/{{ item.1.name }}
   register: _check_kernel_module_parameters
   failed_when: false
   changed_when: false
+  check_mode: false
   with_subelements:
     - "{{ conntrack_kernel_modules | selectattr('params', 'defined') | list }}"
     - params
@@ -35,7 +36,7 @@
     - conntrack-check-kernel-module-parameters
 
 - name: apply kernel module parameters
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.item.1.value }}"
     dest: "/sys/module/{{ item.item.0.name }}/parameters/{{ item.item.1.name }}"
     mode: preserve
@@ -48,7 +49,7 @@
     - conntrack-apply-kernel-module-parameters
 
 - name: save kernel modules
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/modules
     line: "{{ item.name }}"
   with_items: "{{ conntrack_kernel_modules }}"
@@ -58,7 +59,7 @@
     - conntrack-save-kernel-modules
 
 - name: save kernel module parameters
-  template:
+  ansible.builtin.template:
     src: etc/modprobe.d/config.conf.j2
     dest: "/etc/modprobe.d/{{ item.name }}.conf"
     mode: 0644
@@ -69,7 +70,7 @@
     - conntrack-save-kernel-module-parameters
 
 - name: set sysctl settings
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     reload: true

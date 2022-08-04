@@ -5,14 +5,14 @@
   become: true
   pre_tasks:
     - name: include vars
-      include_vars: "{{ playbook_dir }}/vars/main.yml"
+      ansible.builtin.include_vars: "{{ playbook_dir }}/vars/main.yml"
   roles:
     - ../../
   post_tasks:
     - name: include tasks
-      include: "{{ playbook_dir }}/tasks/post.yml"
+      ansible.builtin.include: "{{ playbook_dir }}/tasks/post.yml"
     - name: check hashsize
-      shell: >
+      ansible.builtin.shell: >
         cat /sys/module/{{ conntrack_kernel_modules[0]['name'] }}/parameters/{{ conntrack_kernel_modules[0]['params'][0]['name'] }}
         | grep -q {{ conntrack_kernel_modules[0]['params'][0]['value'] }}
         && (echo 'test: pass' && exit 0)

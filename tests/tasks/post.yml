@@ -1,7 +1,7 @@
 # post test file
 ---
 - name: check nf_conntrack_max
-  shell: >
+  ansible.builtin.shell: >
     sysctl -a
     | grep {{ conntrack_sysctl_settings[0]['name'] }}
     | grep -q {{ conntrack_sysctl_settings[0]['value'] }}
