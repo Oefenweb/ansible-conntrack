@@ -10,7 +10,7 @@
     - ../../
   post_tasks:
     - name: include tasks
-      ansible.builtin.include: "{{ playbook_dir }}/tasks/post.yml"
+      ansible.builtin.import_tasks: "{{ playbook_dir }}/tasks/post.yml"
     - name: check hashsize
       ansible.builtin.shell: >
         cat /sys/module/{{ conntrack_kernel_modules[0]['name'] }}/parameters/{{ conntrack_kernel_modules[0]['params'][0]['name'] }}
