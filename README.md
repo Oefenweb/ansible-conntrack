@@ -31,7 +31,7 @@ None
 ---
 - hosts: all
   roles:
-    - conntrack
+    - oefenweb.conntrack
   vars:
     conntrack_kernel_modules:
       - name: nf_conntrack
