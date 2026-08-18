@@ -62,7 +62,7 @@
   ansible.builtin.template:
     src: etc/modprobe.d/config.conf.j2
     dest: "/etc/modprobe.d/{{ item.name }}.conf"
-    mode: 0644
+    mode: '0644'
   with_items: "{{ conntrack_kernel_modules }}"
   tags:
     - configuration
